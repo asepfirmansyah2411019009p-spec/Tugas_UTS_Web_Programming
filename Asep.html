@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operasi Bilangan</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 500px;
+            padding: 32px;
+        }
+
+        .subtitle {
+            color: #3b82f6;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .title {
+            color: #1e293b;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #f1f5f9;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #334155;
+            outline: none;
+            transition: all 0.2s ease;
+            background-color: #ffffff;
+        }
+
+        select:focus, input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            flex: 2;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background-color: #ffffff;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .result-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            padding: 16px 20px;
+        }
+
+        .result-title {
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .result-content {
+            color: #1e3a8a;
+            font-size: 18px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="subtitle">Belajar Matematika</div>
+        <h1 class="title">Operasi Bilangan</h1>
+        <p class="description">Pilih cara hitung dan masukkan bilangan yang ingin diproses.</p>
+        
+        <div class="divider"></div>
+
+        <form id="calcForm">
+            <div class="form-group">
+                <label for="operasi">Jenis perhitungan</label>
+                <select id="operasi">
+                    <option value="tambah">Penjumlahan (+)</option>
+                    <option value="kurang">Pengurangan (-)</option>
+                    <option value="kali">Perkalian (×)</option>
+                    <option value="bagi">Pembagian (÷)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bil1">Bilangan pertama</label>
+                    <input type="number" id="bil1" placeholder="Masukkan bilangan" step="any">
+                </div>
+                <div class="form-group">
+                    <label for="bil2">Bilangan kedua</label>
+                    <input type="number" id="bil2" placeholder="Masukkan bilangan" step="any">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-primary" onclick="prosesHitung()">Proses perhitungan</button>
+                <button type="button" class="btn-secondary" onclick="kosongkanForm()">Kosongkan</button>
+            </div>
+        </form>
+
+        <div class="result-box">
+            <div class="result-title">Jawaban</div>
+            <div class="result-content" id="hasil">Hasil akan ditampilkan di sini</div>
+        </div>
+    </div>
+
+    <script>
+        function prosesHitung() {
+            const val1 = document.getElementById('bil1').value;
+            const val2 = document.getElementById('bil2').value;
+            const operasi = document.getElementById('operasi').value;
+            const elemenHasil = document.getElementById('hasil');
+
+            if (val1 === '' || val2 === '') {
+                elemenHasil.innerText = "Mohon isi kedua bilangan!";
+                return;
+            }
+
+            const num1 = parseFloat(val1);
+            const num2 = parseFloat(val2);
+            let hasil = 0;
+
+            switch (operasi) {
+                case 'tambah':
+                    hasil = num1 + num2;
+                    break;
+                case 'kurang':
+                    hasil = num1 - num2;
+                    break;
+                case 'kali':
+                    hasil = num1 * num2;
+                    break;
+                case 'bagi':
+                    if (num2 === 0) {
+                        elemenHasil.innerText = "Tidak bisa membagi dengan nol!";
+                        return;
+                    }
+                    hasil = num1 / num2;
+                    break;
+            }
+
+            elemenHasil.innerText = hasil;
+        }
+
+        function kosongkanForm() {
+            document.getElementById('bil1').value = '';
+            document.getElementById('bil2').value = '';
+            document.getElementById('operasi').selectedIndex = 0;
+            document.getElementById('hasil').innerText = 'Hasil akan ditampilkan di sini';
+        }
+    </script>
+
+</body>
+</html>
